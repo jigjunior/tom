@@ -1,14 +1,8 @@
 package br.com.jigabyte.tom;
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-
-import br.com.jigabyte.tom.databinding.ActivityMainBinding;
-import br.com.jigabyte.tom.model.Usuario;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,13 +13,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+    }
+
+    public void buscaToken() {
         // chama a tela de login se não tiver o token
         if(token == null){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, ACTIVITY_2_REQUEST_TOKEN);
+        } else {
+            // chama activity de listar tickets
         }
-
-
     }
 
     @Override
@@ -38,4 +36,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        buscaToken();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        buscaToken();
+    }
+
+
 }
