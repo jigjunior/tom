@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="usuario"
+            type="br.com.jigabyte.tom.model.Usuario"/>
+        <variable
+            name="handlers"
+            type="br.com.jigabyte.tom.LoginActivity.MyClickHandlers"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txt_login_nome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Nome"
+            app:layout_constraintEnd_toEndOf="@+id/edt_login_nome"
+            app:layout_constraintStart_toStartOf="@+id/edt_login_nome"
+            app:layout_constraintTop_toBottomOf="@+id/edt_login_senha"
+            tools:visibility="gone"
+            />
+
+        <EditText
+            android:id="@+id/edt_login_nome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
+            android:ems="10"
+            android:hint="Nome Completo"
+            android:text="@{usuario.nome}"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_login_nome"
+            tools:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/txt_login_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="E-mail"
+            app:layout_constraintEnd_toEndOf="@+id/edt_login_email"
+            app:layout_constraintStart_toStartOf="@+id/edt_login_email"
+            app:layout_constraintTop_toBottomOf="@+id/edt_login_nome"
+            tools:visibility="gone"
+            />
+
+        <EditText
+            android:id="@+id/edt_login_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
+            android:ems="10"
+            android:hint="Endereço de E-mail"
+            android:text="@{usuario.email}"
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_login_email"
+            tools:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/txt_login_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Login"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/edt_login_login"
+            app:layout_constraintStart_toStartOf="@+id/edt_login_login"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/edt_login_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
+            android:ems="10"
+            android:hint="Nome de usuário"
+            android:text="@{usuario.login}"
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_login_login"/>
+
+        <TextView
+            android:id="@+id/txt_login_senha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Senha"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/edt_login_senha"
+            app:layout_constraintEnd_toEndOf="@+id/edt_login_senha"
+            app:layout_constraintStart_toStartOf="@+id/edt_login_senha"
+            app:layout_constraintTop_toBottomOf="@+id/edt_login_login"/>
+
+        <EditText
+            android:id="@+id/edt_login_senha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
+            android:ems="10"
+            android:hint="Palavra chave"
+            android:text="@{usuario.senha}"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_login_senha"/>
+
+        <TextView
+            android:id="@+id/txt_cadastreOK"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="right"
+            android:text="Se ainda não possui conta"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_login_cadastre"
+            app:layout_constraintEnd_toStartOf="@+id/btn_login_cadastre"
+            app:layout_constraintHorizontal_weight="3"
+            app:layout_constraintTop_toTopOf="@+id/btn_login_cadastre"/>
+
+        <Button
+            android:id="@+id/btn_login_cadastreOK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="32dp"
+            android:text="ENTRAR"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edt_login_senha"/>
+
+        <Button
+            android:id="@+id/btn_login_cadastre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="Cadastre-se"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{handlers::onCadastreClicked"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

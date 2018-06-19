@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView31"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Forma de Pagamento"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <RadioGroup
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:checkedButton="@+id/radioDebito"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/textView31"
+        app:layout_constraintTop_toBottomOf="@+id/textView31">
+
+        <RadioButton
+            android:id="@+id/radioDebito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Debito em conta"/>
+
+        <RadioButton
+            android:id="@+id/radioCredito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cartão de Crédito"/>
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Número do Cartão"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="117dp"/>
+
+    <TextView
+        android:id="@+id/textView33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Digito verificador"
+        tools:layout_editor_absoluteX="262dp"
+        tools:layout_editor_absoluteY="117dp"/>
+
+    <EditText
+        android:id="@+id/editText5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="1234123412341234"
+        android:inputType="numberSigned"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="136dp"/>
+
+    <EditText
+        android:id="@+id/editText6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="123"
+        android:inputType="numberSigned"
+        tools:layout_editor_absoluteX="330dp"
+        tools:layout_editor_absoluteY="136dp"/>
+
+    <TextView
+        android:id="@+id/textView34"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nome do titular"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="208dp"/>
+
+    <EditText
+        android:id="@+id/editText7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="AYRTON SENNA DA SILVA"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="227dp"/>
+
+    <TextView
+        android:id="@+id/textView35"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data de validade"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="306dp"/>
+
+    <EditText
+        android:id="@+id/editText8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="22/11/2019"
+        android:inputType="date"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="325dp"/>
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirmar"
+        tools:layout_editor_absoluteX="241dp"
+        tools:layout_editor_absoluteY="315dp"/>
+</android.support.constraint.ConstraintLayout>

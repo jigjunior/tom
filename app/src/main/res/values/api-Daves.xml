@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+Cartao
+    buscarAll
+    method GET
+    'https://service.davesmartins.com.br/api/cartao/1/1/1/1/1'
+    /cartao/String {cartao}/int {mes}/int {ano}/String {tarja}/double{valor}
+
+
+
+Usuario
+
+    saveUsuarios
+    method POST
+    parameter Usuario usuario
+    {
+    "email": "string",
+    "id": 0,
+    "login": "string",
+    "nome": "string",
+    "senha": "string"
+    }
+    'https://service.davesmartins.com.br/api/usuarios'
+
+
+    buscarAll
+    method GET
+    'https://service.davesmartins.com.br/api/usuarios/all'
+    exemplo resposta
+    [
+      {
+        "id": 1,
+        "nome": "Zezin",
+        "email": "ze@ze",
+        "token": "9 passagens compradas"
+      },
+      {
+        "id": 2,
+        "nome": "Pedrin",
+        "email": "ped@ped",
+        "token": "8 passagens compradas"
+      },
+      {
+        "id": 3,
+        "nome": "Gustin",
+        "email": "gugu@gu",
+        "token": "8 passagens compradas"
+      },
+      {
+        "id": 4,
+        "nome": "Jerfin",
+        "email": "jerfin@fefin",
+        "token": "8 passagens compradas"
+      },
+      {
+        "id": 5,
+        "nome": "Mariazinha",
+        "email": "mariazinha@br",
+        "token": "8 passagens compradas"
+      },
+      {
+        "id": 6,
+        "nome": "string",
+        "email": "string",
+        "token": "0 passagens compradas"
+      }
+    ]
+    
+    
+    Login na API
+    method POST
+    'https://service.davesmartins.com.br/api/usuarios/login'
+    parameter Usuario usuario
+    {
+    "login": "string",
+    "senha": "string"
+    }
+    exemplo
+    CURL
+    curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ \
+    "email": "string", \
+    "id": 0, \
+    "login": "string", \
+    "nome": "string", \
+    "senha": "string" \
+    }' 'https://service.davesmartins.com.br/api/usuarios'
+    exemplo resposta: RESPONSE BODY
+    {
+    "id": 6,
+    "nome": "string",
+    "email": "string",
+    👉👉👉"token": "ieYUsnb6cH1pRIf+uJDh4XeLSJn7fpKImxRCQb0JXaA9y1bDBwEC/tV3s7zXBNC+"👈👈👈
+    }
+
+    buscar
+    method GET
+    'https://service.davesmartins.com.br/api/usuarios/3'
+    parameter /usuarios/long {id}
+    parameter header String code
+    curl -X GET --header 'Accept: application/json' --header 'code: ieYUsnb6cH1pRIf+uJDh4XeLSJn7fpKImxRCQb0JXaA9y1bDBwEC/tV3s7zXBNC+' 'https://service.davesmartins.com.br/api/usuarios/3'
+    exemplo resposta: RESPONSE BODY
+      "id": 21,
+      "nome": "123",
+      "email": "123",
+      "token": "",
+      "passagens": []
+
+
+Voo
+			 buscarAll
+			 method GET
+			 'https://service.davesmartins.com.br/api/voo'
+			 parameter header String code
+			 curl -X GET --header 'Accept: application/json' --header 'code: ieYUsnb6cH1pRIf+uJDh4XeLSJn7fpKImxRCQb0JXaA9y1bDBwEC/tV3s7zXBNC+' 'https://service.davesmartins.com.br/api/voo'
+			 exemplo resposta
+			[
+						{
+									"aviao": {
+												"capacidade": 0,
+												"id": 0,
+												"modelo": "string",
+												"prefixo": "string"
+									},
+									"dataVoo": "2018-06-14T00:11:57.019Z",
+									"destino": {
+												"aeroporto": "string",
+												"cidade": "string",
+												"id": 0
+									},
+									"id": 0,
+									"origem": {
+												"aeroporto": "string",
+												"cidade": "string",
+												"id": 0
+									},
+									"valorPassagem": 0
+						},
+						{
+									"id": 1,
+									"origem": {
+												"id": 7,
+												"aeroporto": "Aeroporto do Bacacheri ",
+												"cidade": "Curitiba"
+									},
+									"destino": {
+												"id": 1,
+												"aeroporto": "Aeroporto Internacional de Belo Horizonte-Confins",
+												"cidade": "Confins"
+									},
+									"dataVoo": "=28/08/2018 02:00:00",
+									"valorPassagem": 580,
+									"aviao": {
+												"id": 2,
+												"prefixo": "PT-1111",
+												"modelo": "Air Bus",
+												"capacidade": 90
+									}
+						},
+						{
+									"id": 2,
+									"origem": {
+												"id": 19,
+												"aeroporto": "Aeroporto Internacional de Campo Grande - Antônio João",
+												"cidade": "Campo Grande"
+									},
+									"destino": {
+												"id": 5,
+												"aeroporto": "Aeroporto Internacional de São Paulo - Guarulhos",
+												"cidade": "Guarulhos"
+									},
+									"dataVoo": "=01/08/2018 05:00:00",
+									"valorPassagem": 470,
+									"aviao": {
+												"id": 1,
+												"prefixo": "PT-23456",
+												"modelo": "Boing 747",
+												"capacidade": 125
+          }
+        }
+			]
+			
+			buscar
+			method GET
+			'https://service.davesmartins.com.br/api/voo/2'
+			/voo/long {id}
+			parameter path long {id}
+			parameter header String {code}
+			
+			CURL
+			curl -X GET --header 'Accept: application/json' --header 'code: ieYUsnb6cH1pRIf+uJDh4XeLSJn7fpKImxRCQb0JXaCKW199NN2LeX4805w4g73h' 'https://service.davesmartins.com.br/api/voo/2'
+
+
+			buscarPoltronas
+			method GET
+			/voo/long {id}/poltronas
+			'https://service.davesmartins.com.br/api/voo/1/poltronas'
+			parameter path long {id}
+			paramenter header String {code}
+			CURL
+			curl -X GET --header 'Accept: application/json' --header 'code: ieYUsnb6cH1pRIf+uJDh4bTKPFALmq5Ux5ghngMEWK9mpfoUY5+KbiPnA7HQSG2/' 'https://service.davesmartins.com.br/api/voo/1/poltronas'
+			exemplo resposta
+			[
+     {
+       "assento": "string",
+       "id": 0,
+       "ocupado": true,
+       "usuario": {
+         "ativo": true,
+         "email": "string",
+         "id": 0,
+         "login": "string",
+         "nome": "string",
+         "passagens": [
+           {
+             "assento": "string",
+             "id": 0,
+             "ocupado": true,
+             "usuario": {}
+           }
+         ]
+       }
+     }
+   ]
+   
+   ieYUsnb6cH1pRIf+uJDh4bTKPFALmq5Ux5ghngMEWK9mpfoUY5+KbiPnA7HQSG2/
+   buscarPoltronas
+   method GET
+   /voo/long {id}/poltronas/long {poltrona}
+   'https://service.davesmartins.com.br/api/voo/1/poltronas/1'
+   parameter path long {id}
+   parameter path long {id}
+   paramenter header String {code}
+   CURL
+   curl -X GET --header 'Accept: application/json' --header 'code: ieYUsnb6cH1pRIf+uJDh4bTKPFALmq5Ux5ghngMEWK9mpfoUY5+KbiPnA7HQSG2/' 'https://service.davesmartins.com.br/api/voo/1/poltronas/1'
+   exemplo resposta
+   {
+     "id": 1,
+     "assento": "1",
+     "ocupado": false
+   }
+   
+   
+   putPoltronas
+   method POST
+   /voo/long {id}/poltronas/long {poltrona}
+   'https://service.davesmartins.com.br/api/voo/1/poltronas/1'
+   parameter path long {id}
+   parameter path long {id}
+   paramenter header String {code}
+   CURL
+   curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/json' --header 'code: ieYUsnb6cH1pRIf+uJDh4bTKPFALmq5Ux5ghngMEWK9mpfoUY5+KbiPnA7HQSG2/' 'https://service.davesmartins.com.br/api/voo/1/poltronas/1'
+   
+   </resources>
