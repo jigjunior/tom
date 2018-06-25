@@ -5,7 +5,6 @@ import android.databinding.Observable;
 import android.databinding.PropertyChangeRegistry;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
@@ -19,21 +18,26 @@ public class Usuario implements Serializable, Observable {
     "email":"string",
     "nome":"string",
     "token":"ieYUsnb6cH1pRIf+uJDh4XeLSJn7fpKImxRCQb0JXaCKW199NN2LeX4805w4g73h"
+
+
+    @Expose
+    String myString;  // will be serialized as myString
+
+    @SerializedName("m_s")
+    String myString; // will be serialized as m_s
  */
 
-    @SerializedName("id")
+    @Expose
     private int id;
-    @SerializedName("login")
     @Expose
     private String login;
     @Expose
-    @SerializedName("senha")
     private String senha;
-    @SerializedName("nome")
+    @Expose
     private String nome;
-    @SerializedName("email")
+    @Expose
     private String email;
-    @SerializedName("token")
+    @Expose
     private String token;
 
     private transient PropertyChangeRegistry propertyChangeRegistry = new PropertyChangeRegistry();

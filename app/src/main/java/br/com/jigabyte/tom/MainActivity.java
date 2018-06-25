@@ -4,25 +4,42 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
+import br.com.jigabyte.tom.model.Usuario;
+
 public class MainActivity extends AppCompatActivity {
 
-    public static String token;
+    public static final int NAV_TICKET_LIST = 1;
+    public static final int NAV_TICKET_DETALHES = 2;
     final int ACTIVITY_2_REQUEST_TOKEN = 1;
+    public static final int NAV_VOO_BUSCAR = 3;
+    public static final int NAV_VOO_LIST = 4;
+    public static final int NAV_VOO_COMPRAR = 5;
+    public static final int NAV_VOO_PAGAR = 6;
+    public static int NAVIGATION;
+    private static String TAG = "";
+    public Usuario usuario;
+    ArrayList<Usuario> listaDeUsuarios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        NAVIGATION = 0;
 
 
     }
 
-    public void buscaToken() {
+    public void buscaNavegacao() {
         // chama a tela de login se não tiver o token
-        if(token == null){
+        if (usuario.getToken() == null) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, ACTIVITY_2_REQUEST_TOKEN);
         } else {
-            // chama activity de listar tickets
+            Intent intent = new Intent(this, TicketList.class);
+            startActivityForResult(intent, ACTIVITY_TICKET_REQUEST_TOKEN);
+
+
         }
     }
 
@@ -31,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ACTIVITY_2_REQUEST_TOKEN) {
             if(resultCode == RESULT_OK){
-                String resultado = data.getStringExtra("token");
-                this.token = resultado;
+                usuario = (Usuario) data.getSerializableExtra("usuarioLogado");
+                TAG = ("Usuario Logado: " + usuario.toString());
             }
         }
     }
@@ -40,13 +57,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        buscaToken();
+        buscaNavegacao();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        buscaToken();
+        buscaNavegacao();
     }
 
 

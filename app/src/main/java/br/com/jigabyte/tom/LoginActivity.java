@@ -13,7 +13,7 @@ import java.util.List;
 
 import br.com.jigabyte.tom.databinding.Tela00LoginBinding;
 import br.com.jigabyte.tom.model.Usuario;
-import br.com.jigabyte.tom.model.response.UsuarioResponse;
+import br.com.jigabyte.tom.model.UsuarioLogin;
 import br.com.jigabyte.tom.rest.ApiClient;
 import br.com.jigabyte.tom.rest.ApiInterface;
 import retrofit2.Call;
@@ -27,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     private Usuario usuario;
     private Tela00LoginBinding bindingLogin;
     private MyClickHandlers handlers;
+    private String token;
+    private boolean teste;
 
     List<Usuario> listaDeUsuarios;
 
@@ -38,34 +40,9 @@ public class LoginActivity extends AppCompatActivity {
 
         bindingLogin = DataBindingUtil.setContentView(this, R.layout.tela_00_login);
 
-
         handlers = new MyClickHandlers(this);
         bindingLogin.setHandlers(handlers);
         fechaViewsDoCadastro();
-
-
-        // Consumindo API
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<UsuarioResponse> call = apiService.getBuscarAllUsuarios();
-        call.enqueue(new Callback<UsuarioResponse>() {
-            @Override
-            public void onResponse(Call<UsuarioResponse> call, Response<UsuarioResponse> response) {
-                //List<Movie> movies = response.body().getResults();
-                listaDeUsuarios = response.body().getResults();
-                String body = response.body().toString();
-                Log.d(TAG, "Numero de usuarios recebidos: " + listaDeUsuarios.size());
-            }
-
-            @Override
-            public void onFailure(Call<UsuarioResponse> call, Throwable t) {
-                // Log error here since request failed
-                Log.e(TAG, t.toString());
-            }
-        });
-
-
-
-
 
 
 
@@ -96,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
     private void returnToken(){
         if(usuario.getToken() != null) {
             Intent returnIntent = new Intent();
-            returnIntent.putExtra("token", usuario.getToken());
+            returnIntent.putExtra("usuarioLogado", usuario);
             setResult(RESULT_OK, returnIntent);
         }
     }
@@ -122,22 +99,33 @@ public class LoginActivity extends AppCompatActivity {
                     // campos em branco
                     Toast.makeText(getApplicationContext(), "Informe todos os campos", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Executa saveUsuario na API do Daves
+                    usuario = new Usuario();
+                    usuario.setNome(bindingLogin.edtLoginNome.getText().toString());
+                    usuario.setEmail(bindingLogin.edtLoginEmail.getText().toString());
+                    usuario.setLogin(bindingLogin.edtLoginLogin.getText().toString());
+                    usuario.setSenha(bindingLogin.edtLoginSenha.getText().toString());
 
-
+                    // Grava o novo usuario
+                    gravaNovoUsuario(usuario);
                 }
-
-
             }
-
-
         }
 
         public void onEntrarClicked(View view) {
-            Toast.makeText(getApplicationContext(), "Entrar clicked!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Entrar clicked!", Toast.LENGTH_SHORT).show();
+
+            UsuarioLogin userLogin = new UsuarioLogin();
+            userLogin.setLogin(bindingLogin.edtLoginLogin.getText().toString());
+            userLogin.setSenha(bindingLogin.edtLoginSenha.getText().toString());
 
             // Executa Login na API do Daves
-
+            if (loginDeUsuario(userLogin)) {
+                returnToken();
+                Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(), "Erro de logon", Toast.LENGTH_SHORT).show();
+            }
 
             // Trata JSON e inicializa new Usuario().setters;
 
@@ -154,6 +142,89 @@ public class LoginActivity extends AppCompatActivity {
             if (bindingLogin.edtLoginSenha.getText().toString().trim().length() == 0) return false;
             return true;
         }
+
+        public void todosUsuarios() {
+
+            /*Create handle for the RetrofitInstance interface*/
+            ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<Usuario>> call = service.getAllUsuarios();
+            call.enqueue(new Callback<List<Usuario>>() {
+
+                @Override
+                public void onResponse(Call<List<Usuario>> call, Response<List<Usuario>> response) {
+                    listaDeUsuarios = response.body();
+                }
+
+                @Override
+                public void onFailure(Call<List<Usuario>> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        public void gravaNovoUsuario(Usuario user) {
+
+            /*Create handle for the RetrofitInstance interface*/
+            ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+            Call<Usuario> call = service.postSaveUsuario(user);
+            call.enqueue(new Callback<Usuario>() {
+
+                @Override
+                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                    //  = (Usuario) response.body();
+                    if (response.isSuccessful()) {
+                        // USUARIO CADASTRADO COM SUCESSO
+                        usuario = response.body();
+                        Log.d(TAG, "Usuario: " + usuario.toString());
+                        fechaViewsDoCadastro();
+                        Toast.makeText(getApplicationContext(), "Usuario cadastrado com sucesso", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.d(TAG, "Erro: " + response.errorBody().toString());
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call<Usuario> call, Throwable t) {
+                    // Log error here since request failed
+                    Log.e(TAG, "Erro: " + t.toString());
+                }
+            });
+        }
+
+
+        public boolean loginDeUsuario(UsuarioLogin user) {
+            teste = false;
+
+            /*Create handle for the RetrofitInstance interface*/
+            ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+            Call<Usuario> call = service.postLogin(user);
+            call.enqueue(new Callback<Usuario>() {
+
+                @Override
+                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                    //  = (Usuario) response.body();
+                    if (response.isSuccessful()) {
+                        // LOGIN EFETUDO COM SUCESSO
+                        usuario = response.body();
+                        Log.d(TAG, "Usuario: " + usuario.toString());
+                        teste = true;
+
+                    } else {
+                        Log.d(TAG, "Erro: " + response.errorBody().toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Usuario> call, Throwable t) {
+                    // Log error here since request failed
+                    Log.e(TAG, "Erro: " + t.toString());
+                }
+            });
+            return teste;
+        }
+
 
     }
 
