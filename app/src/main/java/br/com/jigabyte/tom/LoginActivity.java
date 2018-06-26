@@ -43,6 +43,11 @@ public class LoginActivity extends AppCompatActivity {
         fechaViewsDoCadastro();
 
 
+        /************************************* LOGIN AUTOMATICO ***********************************/
+        UsuarioLogin userLogin = new UsuarioLogin("aaa", "aaa");
+        loginDeUsuario(userLogin); // Executa Login na API do Daves
+        /******************************************************************************************/
+
 
     }
 
@@ -160,14 +165,17 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
 
                 } else {
+                    bindingLogin.progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "Erro de logon", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Erro: " + response.errorBody().toString());
                 }
             }
 
             @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
+                bindingLogin.progressBar.setVisibility(View.GONE);
                 // Log error here since request failed
-                Toast.makeText(getApplicationContext(), "Erro de logon\n", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Erro de logon", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Erro: " + t.toString());
             }
         });

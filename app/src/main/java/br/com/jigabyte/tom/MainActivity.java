@@ -23,8 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static String TAG = "";
     public static String code = "";
-    public Usuario usuario;
-    ArrayList<Usuario> listaDeUsuarios;
+    public static Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,17 +64,14 @@ public class MainActivity extends AppCompatActivity {
         int request = requestCode;
         int result = resultCode;
 
-        if (requestCode == NAV_TICKET_LIST) {
-            usuario = (Usuario) data.getSerializableExtra("usuarioLogado");
-            TAG = ("Usuario Logado: " + usuario.toString());
-            Toast.makeText(this, TAG, Toast.LENGTH_LONG).show();
-
-        }
         if (resultCode == NAV_TICKET_LIST) {
             usuario = (Usuario) data.getSerializableExtra("usuarioLogado");
             TAG = ("Usuario Logado: " + usuario.toString());
-            Toast.makeText(this, TAG, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, TAG, Toast.LENGTH_LONG).show();
 
+            // Busca a lista de passagens do Usuario por ID
+            // ApiInterface getBuscarUsuario
+            buscaNavegacao();
         }
     }
 
