@@ -93,13 +93,33 @@ public interface ApiInterface {
                                    @Header("code") String code);
 //    curl -X GET --header 'Accept: application/json' --header 'code: 0blqphjjHJieIZ9kF5rAxA5YE+Bd83PrAueFFHTg4oOuBp55WXLkTnduAQ42XYv4' 'https://service.davesmartins.com.br/api/usuarios/135'
 //
-//    {
-//        "id": 135,
-//            "nome": "aaa",
-//            "email": "aaa",
-//            "token": "",
-//            "passagens": []
-//    }
+//{
+//    "id": 135,
+//    "nome": "aaa",
+//    "email": "aaa",
+//    "token": "",
+//    "passagens": [
+//        {
+//            "assento": "39",
+//            "ocupado": true,
+//            "origem": "Curitiba",
+//            "destino": "Confins",
+//            "dataVoo": "28/08/2018 02:00:00",
+//            "valorPassagem": 580,
+//            "aviao": "Air Bus"
+//        },
+//        {
+//            "assento": "29",
+//            "ocupado": true,
+//            "origem": "Curitiba",
+//            "destino": "Confins",
+//            "dataVoo": "28/08/2018 02:00:00",
+//            "valorPassagem": 580,
+//            "aviao": "Air Bus"
+//        }
+//    ]
+//}
+
 
 
     /**----------------------------------   VOOS   -------------------------------------*/
@@ -119,13 +139,13 @@ public interface ApiInterface {
 //            "aeroporto": "Aeroporto Internacional de Belo Horizonte-Confins",
 //            "cidade": "Confins"
 //        },
-//    "dataVoo": "28/08/2018 02:00:00",
-//    "valorPassagem": 580,
-//    "aviao": {
-//        "id": 2,
-//        "prefixo": "PT-1111",
-//        "modelo": "Air Bus",
-//        "capacidade": 90
+//        "dataVoo": "28/08/2018 02:00:00",
+//        "valorPassagem": 580,
+//        "aviao": {
+//            "id": 2,
+//            "prefixo": "PT-1111",
+//            "modelo": "Air Bus",
+//            "capacidade": 90
 //        }
 //    },
 //    {

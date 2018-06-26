@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int NAV_VOO_PAGAR = 6;
 
     private static String TAG = "";
+    public static String code = "";
     public Usuario usuario;
     ArrayList<Usuario> listaDeUsuarios;
 
@@ -68,13 +69,13 @@ public class MainActivity extends AppCompatActivity {
             usuario = (Usuario) data.getSerializableExtra("usuarioLogado");
             TAG = ("Usuario Logado: " + usuario.toString());
             Toast.makeText(this, TAG, Toast.LENGTH_LONG).show();
-            buscaNavegacao();
+
         }
         if (resultCode == NAV_TICKET_LIST) {
             usuario = (Usuario) data.getSerializableExtra("usuarioLogado");
             TAG = ("Usuario Logado: " + usuario.toString());
             Toast.makeText(this, TAG, Toast.LENGTH_LONG).show();
-            buscaNavegacao();
+
         }
     }
 
@@ -85,11 +86,6 @@ public class MainActivity extends AppCompatActivity {
         buscaNavegacao();
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        buscaNavegacao();
-    }
 
 
 }

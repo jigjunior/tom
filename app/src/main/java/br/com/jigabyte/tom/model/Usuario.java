@@ -5,9 +5,9 @@ import android.databinding.Observable;
 import android.databinding.PropertyChangeRegistry;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import br.com.jigabyte.tom.BR;
 
@@ -42,22 +42,23 @@ public class Usuario implements Serializable, Observable {
     private String email;
     @Expose
     private String token;
-
-    @SerializedName("passagens")
-    private Poltrona
+    @Expose
+    private ArrayList<Passagem> passagens;
 
     private transient PropertyChangeRegistry propertyChangeRegistry = new PropertyChangeRegistry();
 
     public Usuario() {
     }
 
-    public Usuario(int id, String login, String senha, String nome, String email, String token) {
+    public Usuario(int id, boolean ativo, String login, String senha, String nome, String email, String token, ArrayList<Passagem> passagens) {
         this.id = id;
+        this.ativo = ativo;
         this.login = login;
         this.senha = senha;
         this.nome = nome;
         this.email = email;
         this.token = token;
+        this.passagens = passagens;
     }
 
     @Bindable
@@ -71,12 +72,13 @@ public class Usuario implements Serializable, Observable {
     }
 
     @Bindable
-    public boolean isAtivo() {
+    public boolean getAtivo() {
         return ativo;
     }
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+        notifyChange(BR.ativo);
     }
 
     @Bindable
@@ -129,6 +131,16 @@ public class Usuario implements Serializable, Observable {
         notifyChange(BR.token);
     }
 
+    @Bindable
+    public ArrayList<Passagem> getPassagens() {
+        return passagens;
+    }
+
+    public void setPassagens(ArrayList<Passagem> passagens) {
+        this.passagens = passagens;
+        notifyChange(BR.passagens);
+    }
+
     private synchronized void notifyChange(int propertyId) {
         if (propertyChangeRegistry == null) {
             propertyChangeRegistry = new PropertyChangeRegistry();
@@ -150,17 +162,5 @@ public class Usuario implements Serializable, Observable {
         if (propertyChangeRegistry != null) {
             propertyChangeRegistry.remove(callback);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                ", senha='" + senha + '\'' +
-                ", nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
-                ", token='" + token + '\'' +
-                '}';
     }
 }

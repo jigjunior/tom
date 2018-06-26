@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         if(usuario.getToken() != null) {
             Intent returnIntent = new Intent();
             returnIntent.putExtra("usuarioLogado", usuario);
+            MainActivity.code = usuario.getToken();
             MainActivity.NAVIGATION = MainActivity.NAV_TICKET_LIST;
             setResult(MainActivity.NAV_TICKET_LIST, returnIntent);
         }

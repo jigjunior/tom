@@ -10,12 +10,13 @@ import com.google.gson.annotations.SerializedName;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.jigabyte.tom.BR;
 
-public class Voo implements Observable {
+public class Voo implements Serializable, Observable {
 
     @Expose
     private long id;
