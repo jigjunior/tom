@@ -4,14 +4,20 @@ import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.databinding.PropertyChangeRegistry;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 import br.com.jigabyte.tom.BR;
 
 public class Aeroporto implements Serializable, Observable {
 
+    @Expose
     private int id;
+    @SerializedName("aeroporto")
     private String nome;
+    @Expose
     private String cidade;
     private transient PropertyChangeRegistry propertyChangeRegistry = new PropertyChangeRegistry();
 

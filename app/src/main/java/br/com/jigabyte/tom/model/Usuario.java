@@ -5,30 +5,33 @@ import android.databinding.Observable;
 import android.databinding.PropertyChangeRegistry;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 import br.com.jigabyte.tom.BR;
 
 public class Usuario implements Serializable, Observable {
-/*
-    "id":0,
-    "login":"string",
-    "senha":"string"
-    "email":"string",
-    "nome":"string",
-    "token":"ieYUsnb6cH1pRIf+uJDh4XeLSJn7fpKImxRCQb0JXaCKW199NN2LeX4805w4g73h"
-
-
-    @Expose
-    String myString;  // will be serialized as myString
-
-    @SerializedName("m_s")
-    String myString; // will be serialized as m_s
- */
+///*
+//    "id":0,
+//    "login":"string",
+//    "senha":"string"
+//    "email":"string",
+//    "nome":"string",
+//    "token":"ieYUsnb6cH1pRIf+uJDh4XeLSJn7fpKImxRCQb0JXaCKW199NN2LeX4805w4g73h"
+//
+//
+//    @Expose
+//    String myString;  // will be serialized as myString
+//
+//    @SerializedName("m_s")
+//    String myString; // will be serialized as m_s
+// */
 
     @Expose
     private int id;
+    @Expose
+    private boolean ativo;
     @Expose
     private String login;
     @Expose
@@ -39,6 +42,8 @@ public class Usuario implements Serializable, Observable {
     private String email;
     @Expose
     private String token;
+    @SerializedName("passagens")
+    private Poltrona
 
     private transient PropertyChangeRegistry propertyChangeRegistry = new PropertyChangeRegistry();
 
@@ -62,6 +67,15 @@ public class Usuario implements Serializable, Observable {
     public void setId(int id) {
         this.id = id;
         notifyChange(BR.id);
+    }
+
+    @Bindable
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     @Bindable
@@ -136,7 +150,6 @@ public class Usuario implements Serializable, Observable {
             propertyChangeRegistry.remove(callback);
         }
     }
-
 
     @Override
     public String toString() {

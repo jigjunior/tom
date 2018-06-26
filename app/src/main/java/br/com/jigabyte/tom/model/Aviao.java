@@ -4,18 +4,23 @@ import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.databinding.PropertyChangeRegistry;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 
 import br.com.jigabyte.tom.BR;
 
 public class Aviao implements Observable, Serializable {
 
+    @Expose
     private int id;
+    @Expose
     private String prefixo;
+    @Expose
     private String modelo;
+    @Expose
     private int capacidade;
     private transient PropertyChangeRegistry propertyChangeRegistry = new PropertyChangeRegistry();
-
 
     public Aviao() {
     }

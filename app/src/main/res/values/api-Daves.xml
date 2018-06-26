@@ -79,7 +79,9 @@ Usuario
     }
     exemplo
     CURL
-    curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ \
+    curl -X POST
+    --header 'Content-Type: application/json'
+    --header 'Accept: application/json' -d '{ \
     "email": "string", \
     "id": 0, \
     "login": "string", \
@@ -99,7 +101,10 @@ Usuario
     'https://service.davesmartins.com.br/api/usuarios/3'
     parameter /usuarios/long {id}
     parameter header String code
-    curl -X GET --header 'Accept: application/json' --header 'code: ieYUsnb6cH1pRIf+uJDh4XeLSJn7fpKImxRCQb0JXaA9y1bDBwEC/tV3s7zXBNC+' 'https://service.davesmartins.com.br/api/usuarios/3'
+    curl -X GET
+        --header 'Accept: application/json'
+        --header 'code: ieYUsnb6cH1pRIf+uJDh4XeLSJn7fpKImxRCQb0JXaA9y1bDBwEC/tV3s7zXBNC+'
+        'https://service.davesmartins.com.br/api/usuarios/3'
     exemplo resposta: RESPONSE BODY
       "id": 21,
       "nome": "123",
@@ -113,7 +118,10 @@ Voo
 			 method GET
 			 'https://service.davesmartins.com.br/api/voo'
 			 parameter header String code
-			 curl -X GET --header 'Accept: application/json' --header 'code: ieYUsnb6cH1pRIf+uJDh4XeLSJn7fpKImxRCQb0JXaA9y1bDBwEC/tV3s7zXBNC+' 'https://service.davesmartins.com.br/api/voo'
+			 curl -X GET
+                --header 'Accept: application/json'
+                --header 'code: ieYUsnb6cH1pRIf+uJDh4XeLSJn7fpKImxRCQb0JXaA9y1bDBwEC/tV3s7zXBNC+'
+                'https://service.davesmartins.com.br/api/voo'
 			 exemplo resposta
 			[
 						{
@@ -189,7 +197,10 @@ Voo
 			parameter header String {code}
 			
 			CURL
-			curl -X GET --header 'Accept: application/json' --header 'code: ieYUsnb6cH1pRIf+uJDh4XeLSJn7fpKImxRCQb0JXaCKW199NN2LeX4805w4g73h' 'https://service.davesmartins.com.br/api/voo/2'
+			curl -X GET
+                --header 'Accept: application/json'
+                --header 'code: ieYUsnb6cH1pRIf+uJDh4XeLSJn7fpKImxRCQb0JXaCKW199NN2LeX4805w4g73h'
+                'https://service.davesmartins.com.br/api/voo/2'
 
 
 			buscarPoltronas
@@ -233,7 +244,10 @@ Voo
    parameter path long {id}
    paramenter header String {code}
    CURL
-   curl -X GET --header 'Accept: application/json' --header 'code: ieYUsnb6cH1pRIf+uJDh4bTKPFALmq5Ux5ghngMEWK9mpfoUY5+KbiPnA7HQSG2/' 'https://service.davesmartins.com.br/api/voo/1/poltronas/1'
+   curl -X GET
+        --header 'Accept: application/json'
+        --header 'code: ieYUsnb6cH1pRIf+uJDh4bTKPFALmq5Ux5ghngMEWK9mpfoUY5+KbiPnA7HQSG2/'
+        'https://service.davesmartins.com.br/api/voo/1/poltronas/1'
    exemplo resposta
    {
      "id": 1,
@@ -250,6 +264,10 @@ Voo
    parameter path long {id}
    paramenter header String {code}
    CURL
-   curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/json' --header 'code: ieYUsnb6cH1pRIf+uJDh4bTKPFALmq5Ux5ghngMEWK9mpfoUY5+KbiPnA7HQSG2/' 'https://service.davesmartins.com.br/api/voo/1/poltronas/1'
+   curl -X PUT
+    --header 'Content-Type: application/json'
+    --header 'Accept: application/json'
+    --header 'code: ieYUsnb6cH1pRIf+uJDh4bTKPFALmq5Ux5ghngMEWK9mpfoUY5+KbiPnA7HQSG2/'
+    'https://service.davesmartins.com.br/api/voo/1/poltronas/1'
    
    </resources>
