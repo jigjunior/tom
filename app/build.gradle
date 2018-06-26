@@ -36,14 +36,13 @@ dependencies {
      *  JODA TIME
      *  http://www.joda.org/joda-time/
      *
-        Instant - Immutable class representing an instantaneous point on the time-line
-        DateTime - Immutable replacement for JDK Calendar
-        LocalDate - Immutable class representing a local date without a time (no time-zone)
-        LocalTime - Immutable class representing a time without a date (no time-zone)
-        LocalDateTime - Immutable class representing a local date and time (no time-zone)
+     Instant - Immutable class representing an instantaneous point on the time-line
+     DateTime - Immutable replacement for JDK Calendar
+     LocalDate - Immutable class representing a local date without a time (no time-zone)
+     LocalTime - Immutable class representing a time without a date (no time-zone)
+     LocalDateTime - Immutable class representing a local date and time (no time-zone)
      */
     implementation 'net.danlew:android.joda:2.9.9.4'
-
 
     /*
         RETROFIT

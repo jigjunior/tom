@@ -24,14 +24,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private static String TAG;
-    private Usuario usuario;
+    List<Usuario> listaDeUsuarios;
+    private Usuario usuario = null;
     private Tela00LoginBinding bindingLogin;
     private MyClickHandlers handlers;
     private String token;
     private boolean teste;
-
-    List<Usuario> listaDeUsuarios;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +72,106 @@ public class LoginActivity extends AppCompatActivity {
         if(usuario.getToken() != null) {
             Intent returnIntent = new Intent();
             returnIntent.putExtra("usuarioLogado", usuario);
-            setResult(RESULT_OK, returnIntent);
+            MainActivity.NAVIGATION = MainActivity.NAV_TICKET_LIST;
+            setResult(MainActivity.NAV_TICKET_LIST, returnIntent);
         }
     }
 
+    private boolean validaCadastro() {
+        if (bindingLogin.edtLoginEmail.getText().toString().trim().length() == 0) return false;
+        if (bindingLogin.edtLoginNome.getText().toString().trim().length() == 0) return false;
+        if (bindingLogin.edtLoginLogin.getText().toString().trim().length() == 0) return false;
+        if (bindingLogin.edtLoginSenha.getText().toString().trim().length() == 0) return false;
+        return true;
+    }
+
+    public void todosUsuarios() {
+
+        /*Create handle for the RetrofitInstance interface*/
+        ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<Usuario>> call = service.getAllUsuarios();
+        call.enqueue(new Callback<List<Usuario>>() {
+
+            @Override
+            public void onResponse(Call<List<Usuario>> call, Response<List<Usuario>> response) {
+                listaDeUsuarios = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<List<Usuario>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void gravaNovoUsuario(Usuario user) {
+
+        /*Create handle for the RetrofitInstance interface*/
+        ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+        Call<Usuario> call = service.postSaveUsuario(user);
+        call.enqueue(new Callback<Usuario>() {
+
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                //  = (Usuario) response.body();
+                if (response.isSuccessful()) {
+                    // USUARIO CADASTRADO COM SUCESSO
+                    usuario = response.body();
+                    Log.d(TAG, "Usuario: " + usuario.toString());
+                    fechaViewsDoCadastro();
+                    Toast.makeText(getApplicationContext(), "Usuario cadastrado com sucesso", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d(TAG, "Erro: " + response.errorBody().toString());
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, "Erro: " + t.toString());
+            }
+        });
+    }
+
+    public void loginDeUsuario(UsuarioLogin user) {
+
+        // Set up progress before call
+        bindingLogin.progressBar.setVisibility(View.VISIBLE);
+        // show it
+
+
+        /*Create handle for the RetrofitInstance interface*/
+        ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+        Call<Usuario> call = service.postLogin(user);
+        call.enqueue(new Callback<Usuario>() {
+
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                //  = (Usuario) response.body();
+                if (response.isSuccessful()) {
+                    // LOGIN EFETUDO COM SUCESSO
+                    usuario = response.body();
+                    Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Usuario: " + usuario.toString());
+                    returnToken();
+                    finish();
+
+                } else {
+                    Log.d(TAG, "Erro: " + response.errorBody().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                // Log error here since request failed
+                Toast.makeText(getApplicationContext(), "Erro de logon\n", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Erro: " + t.toString());
+            }
+        });
+
+    }
 
     public class MyClickHandlers {
 
@@ -87,7 +181,7 @@ public class LoginActivity extends AppCompatActivity {
             this.context = context;
         }
 
-        public void onCadastreClicked(View view){
+        public void onCadastreClicked(View view) {
 
             if (bindingLogin.btnLoginCadastre.getText().toString().equalsIgnoreCase("Cadastre-se")) {
                 //Toast.makeText(getApplicationContext(), "Cadastre-se clicked!", Toast.LENGTH_SHORT).show();
@@ -118,134 +212,30 @@ public class LoginActivity extends AppCompatActivity {
             userLogin.setLogin(bindingLogin.edtLoginLogin.getText().toString());
             userLogin.setSenha(bindingLogin.edtLoginSenha.getText().toString());
 
-            // Executa Login na API do Daves
-            if (loginDeUsuario(userLogin)) {
-                returnToken();
-                Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
-                Toast.makeText(getApplicationContext(), "Erro de logon", Toast.LENGTH_SHORT).show();
-            }
-
+            loginDeUsuario(userLogin); // Executa Login na API do Daves
             // Trata JSON e inicializa new Usuario().setters;
-
-
             // retorna token para MainActivity
-
-        }
-
-
-        private boolean validaCadastro() {
-            if (bindingLogin.edtLoginEmail.getText().toString().trim().length() == 0) return false;
-            if (bindingLogin.edtLoginNome.getText().toString().trim().length() == 0) return false;
-            if (bindingLogin.edtLoginLogin.getText().toString().trim().length() == 0) return false;
-            if (bindingLogin.edtLoginSenha.getText().toString().trim().length() == 0) return false;
-            return true;
-        }
-
-        public void todosUsuarios() {
-
-            /*Create handle for the RetrofitInstance interface*/
-            ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<Usuario>> call = service.getAllUsuarios();
-            call.enqueue(new Callback<List<Usuario>>() {
-
-                @Override
-                public void onResponse(Call<List<Usuario>> call, Response<List<Usuario>> response) {
-                    listaDeUsuarios = response.body();
-                }
-
-                @Override
-                public void onFailure(Call<List<Usuario>> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-
-        public void gravaNovoUsuario(Usuario user) {
-
-            /*Create handle for the RetrofitInstance interface*/
-            ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
-            Call<Usuario> call = service.postSaveUsuario(user);
-            call.enqueue(new Callback<Usuario>() {
-
-                @Override
-                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                    //  = (Usuario) response.body();
-                    if (response.isSuccessful()) {
-                        // USUARIO CADASTRADO COM SUCESSO
-                        usuario = response.body();
-                        Log.d(TAG, "Usuario: " + usuario.toString());
-                        fechaViewsDoCadastro();
-                        Toast.makeText(getApplicationContext(), "Usuario cadastrado com sucesso", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Log.d(TAG, "Erro: " + response.errorBody().toString());
-                    }
-
-
-                }
-
-                @Override
-                public void onFailure(Call<Usuario> call, Throwable t) {
-                    // Log error here since request failed
-                    Log.e(TAG, "Erro: " + t.toString());
-                }
-            });
-        }
-
-
-        public boolean loginDeUsuario(UsuarioLogin user) {
-            teste = false;
-
-            /*Create handle for the RetrofitInstance interface*/
-            ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
-            Call<Usuario> call = service.postLogin(user);
-            call.enqueue(new Callback<Usuario>() {
-
-                @Override
-                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                    //  = (Usuario) response.body();
-                    if (response.isSuccessful()) {
-                        // LOGIN EFETUDO COM SUCESSO
-                        usuario = response.body();
-                        Log.d(TAG, "Usuario: " + usuario.toString());
-                        teste = true;
-
-                    } else {
-                        Log.d(TAG, "Erro: " + response.errorBody().toString());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Usuario> call, Throwable t) {
-                    // Log error here since request failed
-                    Log.e(TAG, "Erro: " + t.toString());
-                }
-            });
-            return teste;
-        }
-
-
-    }
-
-
-    /*
-
-    // Usuario já está setado para Observers @Binding
-    // Não necessitando forçar Observers estáticos
-    public static class Usuario {
-        public static ObservableField<String> login = new ObservableField<>();
-        public static ObservableField<String> senha = new ObservableField<>();
-
-        public ObservableField<String> getLogin() {
-            return login;
-        }
-
-        public ObservableField<String> getSenha() {
-            return senha;
         }
     }
-    */
+
+
+//    /*
+//
+//    // Usuario já está setado para Observers @Binding
+//    // Não necessitando forçar Observers estáticos
+//    public static class Usuario {
+//        public static ObservableField<String> login = new ObservableField<>();
+//        public static ObservableField<String> senha = new ObservableField<>();
+//
+//        public ObservableField<String> getLogin() {
+//            return login;
+//        }
+//
+//        public ObservableField<String> getSenha() {
+//            return senha;
+//        }
+//    }
+//    */
 
 
 }
