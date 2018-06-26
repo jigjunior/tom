@@ -42,6 +42,7 @@ public class Usuario implements Serializable, Observable {
     private String email;
     @Expose
     private String token;
+
     @SerializedName("passagens")
     private Poltrona
 

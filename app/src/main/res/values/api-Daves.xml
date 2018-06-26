@@ -2,6 +2,12 @@
 
 <resources>
 
+
+    https://service.davesmartins.com.br/api/swagger-ui.html
+
+
+
+
 Cartao
     buscarAll
     method GET
