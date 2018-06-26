@@ -3,6 +3,7 @@ package br.com.jigabyte.tom;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -36,9 +37,15 @@ public class MeusTickets extends AppCompatActivity {
 
         listaDePassagens = new ArrayList<>();
 
+
+
+        // use a linear layout manager
+        bind.recyclerViewListaDePassagens.setLayoutManager(new LinearLayoutManager(this));
+        bind.recyclerViewListaDePassagens.setHasFixedSize(true);
+        listaDePassagensAdapter = new PassagensAdapter(listaDePassagens);
+        bind.recyclerViewListaDePassagens.setAdapter(listaDePassagensAdapter);
+
         buscaPassagens();
-
-
     }
 
 
@@ -57,9 +64,11 @@ public class MeusTickets extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     u = response.body();
-                    //Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_SHORT).show();
-                    PassagensAdapter listaDePassagensAdapter = new PassagensAdapter(u.getPassagens());
+
+                    // atualiza recyclerView
+                    listaDePassagensAdapter = new PassagensAdapter(u.getPassagens());
                     bind.recyclerViewListaDePassagens.setAdapter(listaDePassagensAdapter);
+
                     bind.progressListaPassagens.setVisibility(View.GONE);
                     bind.txtCarregandoListaPassagens.setVisibility(View.GONE);
                 } else {

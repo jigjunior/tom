@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.com.jigabyte.tom.R;
+import br.com.jigabyte.tom.databinding.Activity1MeusTicketsBinding;
 import br.com.jigabyte.tom.databinding.Tela10ViewListLayoutPassagensBinding;
 import br.com.jigabyte.tom.model.Passagem;
 
