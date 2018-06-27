@@ -86,7 +86,7 @@ public class VooBuscar extends AppCompatActivity {
                     /* TODO preencher estes Spinners ou autoCompleteTexView */
 
                     // Carregando as listagem no RecyclerView
-                    fecharFiltros();
+                    finalizarProgress();
                     voosAdapter = new VoosAdapter(listaDeVoos);
                     binding.recyclerViewVoos.setAdapter(voosAdapter);
 

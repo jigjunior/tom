@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import br.com.jigabyte.tom.R;
+import br.com.jigabyte.tom.databinding.Tela20ViewListLayoutVooBinding;
 import br.com.jigabyte.tom.model.Voo;
 
 public class VoosAdapter extends RecyclerView.Adapter<VoosAdapter.MyViewHolder> {

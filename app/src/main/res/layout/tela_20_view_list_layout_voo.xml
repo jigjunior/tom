@@ -29,7 +29,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
-                android:text="Selecione poltrona disponível"
+                android:text="Selecione poltrona"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.39"/>
+                app:layout_constraintGuide_percent="0.43"/>
 
             <TextView
                 android:id="@+id/textView25"
@@ -108,9 +108,10 @@
 
             <TextView
                 android:id="@+id/textView30"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:text="R$ xxxxx,00"
                 android:textAppearance="@android:style/TextAppearance.Material.Medium"
@@ -123,13 +124,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:background="@android:color/holo_green_dark"
                 android:text="Comprar"
                 android:textColor="@android:color/background_light"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/textView30"/>
 
             <!-- TODO PREENCHER ESTE SPINNER -->
