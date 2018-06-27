@@ -1,10 +1,11 @@
 package br.com.jigabyte.tom;
 
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class MeusTickets extends AppCompatActivity {
     private ArrayList<Passagem> listaDePassagens;
     public static String TAG = "";
     private Usuario u;
+    private MeusTicketsHandlers handlers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +39,16 @@ public class MeusTickets extends AppCompatActivity {
 
         listaDePassagens = new ArrayList<>();
 
+        handlers = new MeusTicketsHandlers(this);
+        bind.setHandlers(handlers);
+        bind.setUsuario(MainActivity.usuario);
+
 
 
         // use a linear layout manager
         bind.recyclerViewListaDePassagens.setLayoutManager(new LinearLayoutManager(this));
         bind.recyclerViewListaDePassagens.setHasFixedSize(true);
+
         listaDePassagensAdapter = new PassagensAdapter(listaDePassagens);
         bind.recyclerViewListaDePassagens.setAdapter(listaDePassagensAdapter);
 
@@ -54,7 +61,7 @@ public class MeusTickets extends AppCompatActivity {
         long id = (long) MainActivity.usuario.getId();
         u = null;
 
-        /*Create handle for the RetrofitInstance interface*/
+        // Consome API
         ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
         Call<Usuario> call = service.getBuscarUsuario(id, code);
         call.enqueue(new Callback<Usuario>() {
@@ -64,6 +71,8 @@ public class MeusTickets extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     u = response.body();
+
+                    bind.setUsuario(u);
 
                     // atualiza recyclerView
                     listaDePassagensAdapter = new PassagensAdapter(u.getPassagens());
@@ -90,5 +99,19 @@ public class MeusTickets extends AppCompatActivity {
 
     }
 
+
+    public class MeusTicketsHandlers {
+        Context context;
+
+        public MeusTicketsHandlers(Context context) {
+            this.context = context;
+        }
+
+        public void onFabClicked(View view) {
+            Intent intent = new Intent(context, VooBuscar.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 
 }

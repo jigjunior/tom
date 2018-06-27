@@ -1,7 +1,6 @@
 package br.com.jigabyte.tom;
 
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +12,7 @@ import java.util.List;
 
 import br.com.jigabyte.tom.databinding.Tela00LoginBinding;
 import br.com.jigabyte.tom.model.Usuario;
+import br.com.jigabyte.tom.model.UsuarioCadastro;
 import br.com.jigabyte.tom.model.UsuarioLogin;
 import br.com.jigabyte.tom.rest.ApiClient;
 import br.com.jigabyte.tom.rest.ApiInterface;
@@ -22,14 +22,11 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-
-    private static String TAG;
+    private static final String TAG = "";
     List<Usuario> listaDeUsuarios;
     private Usuario usuario = null;
     private Tela00LoginBinding bindingLogin;
     private MyClickHandlers handlers;
-    private String token;
-    private boolean teste;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
         handlers = new MyClickHandlers(this);
         bindingLogin.setHandlers(handlers);
+
         fechaViewsDoCadastro();
 
 
@@ -73,16 +71,6 @@ public class LoginActivity extends AppCompatActivity {
         bindingLogin.btnLoginCadastre.setText("Cadastrar");
     }
 
-    private void returnToken(){
-        if(usuario.getToken() != null) {
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("usuarioLogado", usuario);
-            MainActivity.code = usuario.getToken();
-            MainActivity.NAVIGATION = MainActivity.NAV_TICKET_LIST;
-            setResult(MainActivity.NAV_TICKET_LIST, returnIntent);
-        }
-    }
-
     private boolean validaCadastro() {
         if (bindingLogin.edtLoginEmail.getText().toString().trim().length() == 0) return false;
         if (bindingLogin.edtLoginNome.getText().toString().trim().length() == 0) return false;
@@ -110,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void gravaNovoUsuario(Usuario user) {
+    public void gravaNovoUsuario(UsuarioCadastro user) {
 
         /*Create handle for the RetrofitInstance interface*/
         ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
@@ -142,13 +130,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loginDeUsuario(UsuarioLogin user) {
-
-        // Set up progress before call
         bindingLogin.progressBar.setVisibility(View.VISIBLE);
-        // show it
 
-
-        /*Create handle for the RetrofitInstance interface*/
         ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
         Call<Usuario> call = service.postLogin(user);
         call.enqueue(new Callback<Usuario>() {
@@ -161,12 +144,14 @@ public class LoginActivity extends AppCompatActivity {
                     usuario = response.body();
                     Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Usuario: " + usuario.toString());
-                    returnToken();
+                    MainActivity.usuario = usuario;
+                    MainActivity.code = usuario.getToken();
+                    setResult(MainActivity.NAV_TICKET_LIST);
                     finish();
 
                 } else {
                     bindingLogin.progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getApplicationContext(), "Erro de logon", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Logon inválido", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Erro: " + response.errorBody().toString());
                 }
             }
@@ -179,7 +164,6 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e(TAG, "Erro: " + t.toString());
             }
         });
-
     }
 
     public class MyClickHandlers {
@@ -196,20 +180,20 @@ public class LoginActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "Cadastre-se clicked!", Toast.LENGTH_SHORT).show();
                 abreViewsDoCadastro();
 
-
             } else {
                 if (!validaCadastro()) {
                     // campos em branco
                     Toast.makeText(getApplicationContext(), "Informe todos os campos", Toast.LENGTH_SHORT).show();
                 } else {
-                    usuario = new Usuario();
-                    usuario.setNome(bindingLogin.edtLoginNome.getText().toString());
-                    usuario.setEmail(bindingLogin.edtLoginEmail.getText().toString());
-                    usuario.setLogin(bindingLogin.edtLoginLogin.getText().toString());
-                    usuario.setSenha(bindingLogin.edtLoginSenha.getText().toString());
 
                     // Grava o novo usuario
-                    gravaNovoUsuario(usuario);
+                    gravaNovoUsuario(new UsuarioCadastro(
+                            0,
+                            bindingLogin.edtLoginNome.getText().toString(),
+                            bindingLogin.edtLoginEmail.getText().toString(),
+                            bindingLogin.edtLoginLogin.getText().toString(),
+                            bindingLogin.edtLoginSenha.getText().toString()
+                    ));
                 }
             }
         }

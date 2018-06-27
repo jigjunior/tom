@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.jigabyte.tom.model.Poltrona;
 import br.com.jigabyte.tom.model.Usuario;
+import br.com.jigabyte.tom.model.UsuarioCadastro;
 import br.com.jigabyte.tom.model.UsuarioLogin;
 import br.com.jigabyte.tom.model.Voo;
 import retrofit2.Call;
@@ -54,7 +55,7 @@ public interface ApiInterface {
 
     @Headers({ "Accept: application/json" })
     @POST("usuarios")
-    Call<Usuario> postSaveUsuario(@Body Usuario usuario);
+    Call<Usuario> postSaveUsuario(@Body UsuarioCadastro usuario);
 //curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ \
 //    "email": "aaa", \
 //    "id": 0, \

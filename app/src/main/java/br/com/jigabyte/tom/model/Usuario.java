@@ -3,6 +3,7 @@ package br.com.jigabyte.tom.model;
 import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.databinding.PropertyChangeRegistry;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 
@@ -48,6 +49,7 @@ public class Usuario implements Serializable, Observable {
     private transient PropertyChangeRegistry propertyChangeRegistry = new PropertyChangeRegistry();
 
     public Usuario() {
+        passagens = new ArrayList<>();
     }
 
     public Usuario(int id, boolean ativo, String login, String senha, String nome, String email, String token, ArrayList<Passagem> passagens) {
@@ -162,5 +164,10 @@ public class Usuario implements Serializable, Observable {
         if (propertyChangeRegistry != null) {
             propertyChangeRegistry.remove(callback);
         }
+    }
+
+    @NonNull
+    public String quantidade() {
+        return String.valueOf(passagens.size());
     }
 }

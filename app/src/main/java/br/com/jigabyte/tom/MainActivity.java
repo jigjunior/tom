@@ -3,9 +3,6 @@ package br.com.jigabyte.tom;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import br.com.jigabyte.tom.model.Usuario;
 
@@ -32,47 +29,43 @@ public class MainActivity extends AppCompatActivity {
 
     public void buscaNavegacao() {
         // chama a tela de login se não tiver o token
-        if (NAVIGATION == 0) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent, NAVIGATION);
-        } else if (NAVIGATION == NAV_TICKET_LIST) {
-            Intent intent = new Intent(this, MeusTickets.class);
-            intent.putExtra("usuario_logado", usuario);
-            startActivityForResult(intent, NAVIGATION);
-        } else if (NAVIGATION == NAV_TICKET_DETALHES) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent, NAVIGATION);
-        } else if (NAVIGATION == NAV_VOO_BUSCAR) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent, NAVIGATION);
-        } else if (NAVIGATION == NAV_VOO_LIST) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent, NAVIGATION);
-        } else if (NAVIGATION == NAV_VOO_COMPRAR) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent, NAVIGATION);
-        } else if (NAVIGATION == NAV_VOO_PAGAR) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent, NAVIGATION);
-        }
+
+        Intent i;
+
+        if (NAVIGATION == 0)
+            i = new Intent(this, LoginActivity.class);
+
+        else if (NAVIGATION == NAV_TICKET_LIST)
+            i = new Intent(this, MeusTickets.class);
+
+        else if (NAVIGATION == NAV_TICKET_DETALHES)
+            i = new Intent(this, LoginActivity.class); // TicketDetalhes
+
+        else if (NAVIGATION == NAV_VOO_BUSCAR)
+            i = new Intent(this, VooBuscar.class);
+
+        else if (NAVIGATION == NAV_VOO_LIST)
+            i = new Intent(this, LoginActivity.class); // VooList
+
+        else if (NAVIGATION == NAV_VOO_COMPRAR)
+            i = new Intent(this, LoginActivity.class); // VooComprar
+
+        else if (NAVIGATION == NAV_VOO_PAGAR)
+            i = new Intent(this, LoginActivity.class); // VooPagar
+
+        else
+            i = new Intent(this, MeusTickets.class);
+
+        startActivityForResult(i, NAVIGATION);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        int request = requestCode;
-        int result = resultCode;
+        NAVIGATION = resultCode;
 
-        if (resultCode == NAV_TICKET_LIST) {
-            usuario = (Usuario) data.getSerializableExtra("usuarioLogado");
-            TAG = ("Usuario Logado: " + usuario.toString());
-            //Toast.makeText(this, TAG, Toast.LENGTH_LONG).show();
-
-            // Busca a lista de passagens do Usuario por ID
-            // ApiInterface getBuscarUsuario
-            buscaNavegacao();
-        }
+        buscaNavegacao();
     }
 
 

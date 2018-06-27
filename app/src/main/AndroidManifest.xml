@@ -24,6 +24,8 @@
         </activity>
         <activity android:name=".MeusTickets">
         </activity>
+        <activity android:name=".VooBuscar">
+        </activity>
     </application>
 
 </manifest>
