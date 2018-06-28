@@ -1,6 +1,7 @@
 package br.com.jigabyte.tom.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import br.com.jigabyte.tom.PoltronaComprar;
 import br.com.jigabyte.tom.R;
 import br.com.jigabyte.tom.databinding.Tela20ViewListLayoutVooBinding;
 import br.com.jigabyte.tom.model.Poltrona;
@@ -37,22 +39,24 @@ public class VoosAdapter extends RecyclerView.Adapter<VoosAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Voo voo = vooList.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        final Voo voo = vooList.get(position);
         holder.bind(voo);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PoltronaComprar.class);
+                intent.putExtra("voo", voo);
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
         return vooList.size();
     }
-
-    private void toogleProgressToSpinner() {
-        binding.spinnerPoltrona.setVisibility(View.VISIBLE);
-        binding.progressBarPoltronas.setVisibility(View.GONE);
-    }
-
-
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private Tela20ViewListLayoutVooBinding mBinding;

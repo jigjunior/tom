@@ -1031,7 +1031,7 @@ public interface ApiInterface {
 
     @Headers({ "Accept: application/json" })
     @POST("/voo/{id_voo}/poltronas/{id_poltrona}")
-    Call<Usuario> postSavePoltrona(@Path("id_voo") long id_voo,
+    Call<Poltrona> postSavePoltrona(@Path("id_voo") long id_voo,
                                    @Path("id_poltrona") long id_poltrona,
                                    @Header("code") String code);
     // id_voo = 1
