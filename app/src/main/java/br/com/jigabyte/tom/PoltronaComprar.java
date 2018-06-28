@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import retrofit2.Response;
 public class PoltronaComprar extends AppCompatActivity {
 
     String code = MainActivity.code;
-
+    String assento;
 
     public static final String TAG = "";
     Activity3PoltronaComprarBinding bind;
@@ -33,13 +34,14 @@ public class PoltronaComprar extends AppCompatActivity {
     ArrayList<PoltronaResponse> poltronasDisponiveis;
     MeusClickHandlers handlers;
     Poltrona p;
-
+    ArrayList<String> assentosDisponiveis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_3_poltrona_comprar);
         poltronasDisponiveis = new ArrayList<>();
+        assentosDisponiveis = new ArrayList<>();
         p = new Poltrona();
         bind = DataBindingUtil.setContentView(this, R.layout.activity_3_poltrona_comprar);
 
@@ -53,11 +55,11 @@ public class PoltronaComprar extends AppCompatActivity {
         buscaPoltronasDisponiveis();
 
 
-        ArrayAdapter<PoltronaResponse> adapterSpinnerPoltrona = new ArrayAdapter<>(
+        ArrayAdapter<String> adapterSpinnerPoltrona = new ArrayAdapter<String>(
                 getApplicationContext(),
                 android.R.layout.simple_spinner_dropdown_item,
-                poltronasDisponiveis);
-        bind.spinnerPoltrona.setAdapter(adapterSpinnerPoltrona);
+                assentosDisponiveis);
+        bind.spinnerPoltronaDisponivel.setAdapter(adapterSpinnerPoltrona);
 
     }
 
@@ -86,6 +88,7 @@ public class PoltronaComprar extends AppCompatActivity {
                         for (PoltronaResponse poltrona : listaDePoltronas) {
                             if (!poltrona.getOcupado())
                                 poltronasDisponiveis.add(poltrona);
+                                assentosDisponiveis.add(poltrona.toString());
                         }
                         if (poltronasDisponiveis.size() == 0){
                             Toast.makeText(getApplicationContext(), "Nenhuma Poltrona Disponível",Toast.LENGTH_LONG).show();
@@ -121,7 +124,26 @@ public class PoltronaComprar extends AppCompatActivity {
     }
 
     public void comprarPassagem(View view) {
-        long id_poltrona = Long.parseLong(poltronasDisponiveis.get(bind.spinnerPoltrona.getSelectedItemPosition()).getAssento());
+
+
+        bind.spinnerPoltronaDisponivel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                assento = (String) parent.getItemAtPosition(position);
+                // Notify the selected item text
+                Toast.makeText
+                        (getApplicationContext(), "Selected : " + assento, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        long id_poltrona = Long.parseLong(assento);
         comprar(id_poltrona, voo.getId(), code);
     }
 

@@ -163,7 +163,7 @@
 
         <Spinner
 
-            android:id="@+id/spinner_poltrona"
+            android:id="@+id/spinnerPoltronaDisponivel"
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:layout_marginBottom="16dp"
