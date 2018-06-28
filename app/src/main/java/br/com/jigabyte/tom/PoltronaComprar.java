@@ -2,12 +2,14 @@ package br.com.jigabyte.tom;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,15 +56,24 @@ public class PoltronaComprar extends AppCompatActivity {
 
         buscaPoltronasDisponiveis();
 
+        bind.spinnerPoltronaDisponivel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                assento = (String) parent.getItemAtPosition(position);
+                // Notify the selected item text
+                Toast.makeText(getApplicationContext(), "Selected : " + assento, Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-        ArrayAdapter<String> adapterSpinnerPoltrona = new ArrayAdapter<String>(
+            }
+        });
+        ArrayAdapter<PoltronaResponse> adapterSpinnerPoltrona = new ArrayAdapter<>(
                 getApplicationContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                assentosDisponiveis);
+                R.layout.spinner,
+                poltronasDisponiveis);
         bind.spinnerPoltronaDisponivel.setAdapter(adapterSpinnerPoltrona);
-
     }
-
 
     public void buscaPoltronasDisponiveis() {
 
@@ -112,39 +123,17 @@ public class PoltronaComprar extends AppCompatActivity {
 
     }
 
-
     public class MeusClickHandlers {
         Context context;
-
         public MeusClickHandlers(Context context) {
             this.context = context;
         }
+        public void comprarPassagem(View view) {
+            assento = poltronasDisponiveis.get(bind.spinnerPoltronaDisponivel.getSelectedItemPosition()).getAssento();
+            long id_poltrona = Long.parseLong(assento);
+            comprar(id_poltrona, voo.getId(), code);
+        }
 
-
-    }
-
-    public void comprarPassagem(View view) {
-
-
-        bind.spinnerPoltronaDisponivel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                assento = (String) parent.getItemAtPosition(position);
-                // Notify the selected item text
-                Toast.makeText
-                        (getApplicationContext(), "Selected : " + assento, Toast.LENGTH_SHORT)
-                        .show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
-        long id_poltrona = Long.parseLong(assento);
-        comprar(id_poltrona, voo.getId(), code);
     }
 
     public void comprar(long id_poltrona, long id_voo, String Code){

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
     <data>
         <variable
             name="voo"
@@ -10,9 +14,6 @@
     </data>
 
     <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
@@ -162,14 +163,15 @@
             app:layout_constraintTop_toBottomOf="@+id/textView19"/>
 
         <Spinner
-
             android:id="@+id/spinnerPoltronaDisponivel"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/textView21"
+            app:layout_constraintEnd_toStartOf="@+id/botaotxtPassagemCancelar"
             app:layout_constraintStart_toEndOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="@+id/textView21" />
 
@@ -188,7 +190,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
-            android:onClick="comprarPassagem"
+            android:onClick="@{handlers::comprarPassagem}"
             android:text="Comprar"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -241,6 +243,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="@+id/textView16"/>
+
 
     </android.support.constraint.ConstraintLayout>
 
