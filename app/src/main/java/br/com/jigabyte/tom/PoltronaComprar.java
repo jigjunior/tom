@@ -52,6 +52,7 @@ public class PoltronaComprar extends AppCompatActivity {
 
         buscaPoltronasDisponiveis();
 
+
         ArrayAdapter<PoltronaResponse> adapterSpinnerPoltrona = new ArrayAdapter<>(
                 getApplicationContext(),
                 android.R.layout.simple_spinner_dropdown_item,
@@ -68,7 +69,7 @@ public class PoltronaComprar extends AppCompatActivity {
         /***************************** GET POLTRONAS ****************************/
 
 
-            long id = (long) voo.getId();
+            final long id = (long) voo.getId();
             String code = MainActivity.code;
 
             // Consome API
@@ -86,7 +87,10 @@ public class PoltronaComprar extends AppCompatActivity {
                             if (!poltrona.getOcupado())
                                 poltronasDisponiveis.add(poltrona);
                         }
-                        Log.d(TAG, "Voo ID=" + voo.getId() + "Response OK= " + response.errorBody().toString());
+                        if (poltronasDisponiveis.size() == 0){
+                            Toast.makeText(getApplicationContext(), "Nenhuma Poltrona Disponível",Toast.LENGTH_LONG).show();
+                            bind.botaotxtPassagemCancelar.setVisibility(View.GONE);
+                        }
                     } else {
                         Toast.makeText(getApplicationContext(), "Erro ao tentar carregar poltronas.", Toast.LENGTH_LONG).show();
                         Log.d(TAG, "Erro: " + response.errorBody().toString());
@@ -113,13 +117,13 @@ public class PoltronaComprar extends AppCompatActivity {
             this.context = context;
         }
 
-        public void comprarPassagem(View view) {
-            long id_poltrona = Long.parseLong(poltronasDisponiveis.get(bind.spinnerPoltrona.getSelectedItemPosition()).getAssento());
-            comprar(id_poltrona, voo.getId(), code);
-        }
 
     }
 
+    public void comprarPassagem(View view) {
+        long id_poltrona = Long.parseLong(poltronasDisponiveis.get(bind.spinnerPoltrona.getSelectedItemPosition()).getAssento());
+        comprar(id_poltrona, voo.getId(), code);
+    }
 
     public void comprar(long id_poltrona, long id_voo, String Code){
 

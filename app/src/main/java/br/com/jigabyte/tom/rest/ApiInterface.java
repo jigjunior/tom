@@ -200,7 +200,7 @@ public interface ApiInterface {
 //    }
 
     @Headers({ "Accept: application/json" })
-    @GET("voo/{id}")
+    @GET("voo/{id}/poltronas")
     Call<List<PoltronaResponse>> getPoltronas(@Path("id") long id_voo,
                                               @Header("code") String code);
 

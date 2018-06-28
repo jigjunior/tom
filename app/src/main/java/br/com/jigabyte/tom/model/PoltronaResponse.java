@@ -134,5 +134,8 @@ public class PoltronaResponse implements Observable, Serializable {
         }
     }
 
-
+    @Override
+    public String toString() {
+        return getAssento();
+    }
 }
