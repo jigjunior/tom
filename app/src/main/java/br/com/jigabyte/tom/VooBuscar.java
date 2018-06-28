@@ -22,6 +22,7 @@ import java.util.Set;
 import br.com.jigabyte.tom.adapter.VoosAdapter;
 import br.com.jigabyte.tom.databinding.Activity2VooBuscarBinding;
 import br.com.jigabyte.tom.model.Aeroporto;
+import br.com.jigabyte.tom.model.Poltrona;
 import br.com.jigabyte.tom.model.Voo;
 import br.com.jigabyte.tom.rest.ApiClient;
 import br.com.jigabyte.tom.rest.ApiInterface;
@@ -37,6 +38,7 @@ public class VooBuscar extends AppCompatActivity {
     List<Voo> listaDeVoos;
     ArrayList<Aeroporto> aeroportos_origem;
     ArrayList<Aeroporto> aeroportos_destino;
+    ArrayList<Poltrona> poltronasDisponiveis;
     VoosAdapter voosAdapter;
 
     @Override
@@ -68,6 +70,7 @@ public class VooBuscar extends AppCompatActivity {
 
 
         fecharFiltros();
+        buscaPoltronasDisponiveis(); // atualiza lista de poltronas de todos os voos antes de abrir proxima tela
         finalizarProgress();
         voosAdapter = new VoosAdapter(listaFiltrada);
         binding.recyclerViewVoos.setAdapter(voosAdapter);
@@ -109,6 +112,7 @@ public class VooBuscar extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     listaDeVoos = response.body();
                     abrirFiltros();
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Erro ao tentar carregar lista.", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "Erro: " + response.errorBody().toString());
@@ -188,6 +192,53 @@ public class VooBuscar extends AppCompatActivity {
         binding.recyclerViewVoos.setVisibility(View.VISIBLE);
     }
 
+    public void buscaPoltronasDisponiveis() {
+
+        poltronasDisponiveis = new ArrayList<>();
+
+        /***************************** GET POLTRONAS ****************************/
+
+        for (final Voo voo : listaDeVoos) {
+            long id = voo.getId();
+            String code = MainActivity.code;
+
+            // Consome API
+            ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<Poltrona>> call = service.getPoltronas(id, code);
+            call.enqueue(new Callback<List<Poltrona>>() {
+
+                @Override
+                public void onResponse(Call<List<Poltrona>> call, Response<List<Poltrona>> response) {
+
+                    if (response.isSuccessful()) {
+                        voo.setPoltronas(response.body());
+                        Log.d(TAG, "Voo ID=" + voo.getId() + "Response OK= " + response.errorBody().toString());
+
+
+                        for (Poltrona poltrona : voo.getPoltronas()) {
+                            if (!poltrona.getOcupado())
+                                poltronasDisponiveis.add(poltrona);
+                        }
+                        voo.setPoltronas(poltronasDisponiveis);
+
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Erro ao tentar carregar poltronas.", Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "Erro: " + response.errorBody().toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Poltrona>> call, Throwable t) {
+                    // Log error here since request failed
+                    Toast.makeText(getApplicationContext(), "Erro ao tentar acessar o serviço GET POLTRONAS.", Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "Erro: " + t.toString());
+                }
+            });
+
+        }
+
+    }
 
     public class MeusClickHandlers {
         // Get Current Date

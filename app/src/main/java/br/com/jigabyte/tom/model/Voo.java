@@ -7,11 +7,9 @@ import android.databinding.PropertyChangeRegistry;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.jigabyte.tom.BR;
@@ -30,12 +28,9 @@ public class Voo implements Serializable, Observable {
     private double valorPassagem;
     @Expose
     private Aviao aviao;
-
     @SerializedName("passagens")
     private List<Poltrona> poltronas;
-
     private transient PropertyChangeRegistry propertyChangeRegistry = new PropertyChangeRegistry();
-
 
     public Voo() {
     }
@@ -107,6 +102,15 @@ public class Voo implements Serializable, Observable {
     public void setAviao(Aviao aviao) {
         this.aviao = aviao;
         notifyChange(BR.aviao);
+    }
+
+    @Bindable
+    public List<Poltrona> getPoltronas() {
+        return poltronas;
+    }
+
+    public void setPoltronas(List<Poltrona> poltronas) {
+        this.poltronas = poltronas;
     }
 
     private synchronized void notifyChange(int propertyId) {

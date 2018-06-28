@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         /************************************* LOGIN AUTOMATICO ***********************************/
-        UsuarioLogin userLogin = new UsuarioLogin("aaa", "aaa");
+        UsuarioLogin userLogin = new UsuarioLogin("jj", "jj");
         loginDeUsuario(userLogin); // Executa Login na API do Daves
         /******************************************************************************************/
 
