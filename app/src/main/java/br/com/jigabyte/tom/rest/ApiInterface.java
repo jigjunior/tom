@@ -3,6 +3,7 @@ package br.com.jigabyte.tom.rest;
 import java.util.List;
 
 import br.com.jigabyte.tom.model.Poltrona;
+import br.com.jigabyte.tom.model.PoltronaResponse;
 import br.com.jigabyte.tom.model.Usuario;
 import br.com.jigabyte.tom.model.UsuarioCadastro;
 import br.com.jigabyte.tom.model.UsuarioLogin;
@@ -200,8 +201,8 @@ public interface ApiInterface {
 
     @Headers({ "Accept: application/json" })
     @GET("voo/{id}")
-    Call<List<Poltrona>> getPoltronas(@Path("id") long id_voo,
-                                      @Header("code") String code);
+    Call<List<PoltronaResponse>> getPoltronas(@Path("id") long id_voo,
+                                              @Header("code") String code);
 
 
     // id = 1

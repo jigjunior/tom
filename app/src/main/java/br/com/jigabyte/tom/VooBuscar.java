@@ -46,14 +46,13 @@ public class VooBuscar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_2_voo_buscar);
 
-        Aeroporto x = new Aeroporto(0, "", "");
+        Aeroporto x = new Aeroporto(0, "Selecione", "");
         aeroportos_origem = new ArrayList<>();
         aeroportos_origem.add(x);
         aeroportos_destino = new ArrayList<>();
         aeroportos_destino.add(x);
 
         buscaVoos();
-
 
         handlers = new MeusClickHandlers(this);
         binding.setHandlers(handlers);
@@ -68,9 +67,7 @@ public class VooBuscar extends AppCompatActivity {
         // TODO - implementar os filtros que atendam data e aeroportos
         List<Voo> listaFiltrada = listaFiltrada();
 
-
         fecharFiltros();
-        buscaPoltronasDisponiveis(); // atualiza lista de poltronas de todos os voos antes de abrir proxima tela
         finalizarProgress();
         voosAdapter = new VoosAdapter(listaFiltrada);
         binding.recyclerViewVoos.setAdapter(voosAdapter);
@@ -190,54 +187,6 @@ public class VooBuscar extends AppCompatActivity {
         binding.progressBarVoos.setVisibility(View.GONE);
         binding.txtCarregando.setVisibility(View.GONE);
         binding.recyclerViewVoos.setVisibility(View.VISIBLE);
-    }
-
-    public void buscaPoltronasDisponiveis() {
-
-        poltronasDisponiveis = new ArrayList<>();
-
-        /***************************** GET POLTRONAS ****************************/
-
-        for (final Voo voo : listaDeVoos) {
-            long id = voo.getId();
-            String code = MainActivity.code;
-
-            // Consome API
-            ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<Poltrona>> call = service.getPoltronas(id, code);
-            call.enqueue(new Callback<List<Poltrona>>() {
-
-                @Override
-                public void onResponse(Call<List<Poltrona>> call, Response<List<Poltrona>> response) {
-
-                    if (response.isSuccessful()) {
-                        voo.setPoltronas(response.body());
-                        Log.d(TAG, "Voo ID=" + voo.getId() + "Response OK= " + response.errorBody().toString());
-
-
-                        for (Poltrona poltrona : voo.getPoltronas()) {
-                            if (!poltrona.getOcupado())
-                                poltronasDisponiveis.add(poltrona);
-                        }
-                        voo.setPoltronas(poltronasDisponiveis);
-
-
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Erro ao tentar carregar poltronas.", Toast.LENGTH_LONG).show();
-                        Log.d(TAG, "Erro: " + response.errorBody().toString());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<Poltrona>> call, Throwable t) {
-                    // Log error here since request failed
-                    Toast.makeText(getApplicationContext(), "Erro ao tentar acessar o serviço GET POLTRONAS.", Toast.LENGTH_LONG).show();
-                    Log.e(TAG, "Erro: " + t.toString());
-                }
-            });
-
-        }
-
     }
 
     public class MeusClickHandlers {

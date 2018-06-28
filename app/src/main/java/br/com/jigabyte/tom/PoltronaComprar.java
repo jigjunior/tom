@@ -13,6 +13,7 @@ import java.util.List;
 
 import br.com.jigabyte.tom.databinding.Activity3PoltronaComprarBinding;
 import br.com.jigabyte.tom.model.Poltrona;
+import br.com.jigabyte.tom.model.PoltronaResponse;
 import br.com.jigabyte.tom.model.Voo;
 import br.com.jigabyte.tom.rest.ApiClient;
 import br.com.jigabyte.tom.rest.ApiInterface;
@@ -24,10 +25,12 @@ public class PoltronaComprar extends AppCompatActivity {
 
     String code = MainActivity.code;
 
+
     public static final String TAG = "";
     Activity3PoltronaComprarBinding bind;
     Voo voo;
-    ArrayList<Poltrona> poltronasDisponiveis;
+    List<PoltronaResponse> listaDePoltronas;
+    ArrayList<PoltronaResponse> poltronasDisponiveis;
     MeusClickHandlers handlers;
     Poltrona p;
 
@@ -40,12 +43,16 @@ public class PoltronaComprar extends AppCompatActivity {
         p = new Poltrona();
         bind = DataBindingUtil.setContentView(this, R.layout.activity_3_poltrona_comprar);
 
+
+        voo = (Voo) getIntent().getSerializableExtra("voo");
+        bind.setVoo(voo);
+
         handlers = new MeusClickHandlers(this);
         bind.setHandlers(handlers);
 
+        buscaPoltronasDisponiveis();
 
-
-        ArrayAdapter<Poltrona> adapterSpinnerPoltrona = new ArrayAdapter<>(
+        ArrayAdapter<PoltronaResponse> adapterSpinnerPoltrona = new ArrayAdapter<>(
                 getApplicationContext(),
                 android.R.layout.simple_spinner_dropdown_item,
                 poltronasDisponiveis);
@@ -61,27 +68,25 @@ public class PoltronaComprar extends AppCompatActivity {
         /***************************** GET POLTRONAS ****************************/
 
 
-            long id = voo.getId();
+            long id = (long) voo.getId();
             String code = MainActivity.code;
 
             // Consome API
             ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<Poltrona>> call = service.getPoltronas(id, code);
-            call.enqueue(new Callback<List<Poltrona>>() {
+            Call<List<PoltronaResponse>> call = service.getPoltronas(id, code);
+            call.enqueue(new Callback<List<PoltronaResponse>>() {
 
                 @Override
-                public void onResponse(Call<List<Poltrona>> call, Response<List<Poltrona>> response) {
+                public void onResponse(Call<List<PoltronaResponse>> call, Response<List<PoltronaResponse>> response) {
 
                     if (response.isSuccessful()) {
-                        voo.setPoltronas(response.body());
-                        Log.d(TAG, "Voo ID=" + voo.getId() + "Response OK= " + response.errorBody().toString());
+                        listaDePoltronas = response.body();
 
-                        for (Poltrona poltrona : voo.getPoltronas()) {
+                        for (PoltronaResponse poltrona : listaDePoltronas) {
                             if (!poltrona.getOcupado())
                                 poltronasDisponiveis.add(poltrona);
                         }
-                        voo.setPoltronas(poltronasDisponiveis);
-
+                        Log.d(TAG, "Voo ID=" + voo.getId() + "Response OK= " + response.errorBody().toString());
                     } else {
                         Toast.makeText(getApplicationContext(), "Erro ao tentar carregar poltronas.", Toast.LENGTH_LONG).show();
                         Log.d(TAG, "Erro: " + response.errorBody().toString());
@@ -89,7 +94,7 @@ public class PoltronaComprar extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<List<Poltrona>> call, Throwable t) {
+                public void onFailure(Call<List<PoltronaResponse>> call, Throwable t) {
                     // Log error here since request failed
                     Toast.makeText(getApplicationContext(), "Erro ao tentar acessar o serviço GET POLTRONAS.", Toast.LENGTH_LONG).show();
                     Log.e(TAG, "Erro: " + t.toString());
@@ -109,11 +114,9 @@ public class PoltronaComprar extends AppCompatActivity {
         }
 
         public void comprarPassagem(View view) {
-            comprar(poltronasDisponiveis.get(bind.spinnerPoltrona.getSelectedItemPosition()).getId(), voo.getId(), code);
+            long id_poltrona = Long.parseLong(poltronasDisponiveis.get(bind.spinnerPoltrona.getSelectedItemPosition()).getAssento());
+            comprar(id_poltrona, voo.getId(), code);
         }
-
-
-
 
     }
 
@@ -131,7 +134,7 @@ public class PoltronaComprar extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     p = response.body();
                     Log.d(TAG, "Voo ID=" + voo.getId() + "Response OK= " + response.errorBody().toString());
-
+                    finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "Erro ao tentar comprar poltronas.", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "Erro: " + response.errorBody().toString());

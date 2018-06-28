@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import br.com.jigabyte.tom.model.Usuario;
+import br.com.jigabyte.tom.model.Voo;
 
 public class MainActivity extends AppCompatActivity {
 
