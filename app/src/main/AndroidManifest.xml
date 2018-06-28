@@ -26,6 +26,8 @@
         </activity>
         <activity android:name=".VooBuscar">
         </activity>
+        <activity android:name=".PoltronaComprar">
+        </activity>
     </application>
 
 </manifest>

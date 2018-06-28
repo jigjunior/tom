@@ -97,12 +97,6 @@ public class Aviao implements Observable, Serializable {
 
     @Override
     public String toString() {
-        return "Aviao{" +
-                "id=" + id +
-                ", prefixo='" + prefixo + '\'' +
-                ", modelo='" + modelo + '\'' +
-                ", capacidade=" + capacidade +
-                ", propertyChangeRegistry=" + propertyChangeRegistry +
-                '}';
+        return modelo + "(" + capacidade + " lugares)";
     }
 }
