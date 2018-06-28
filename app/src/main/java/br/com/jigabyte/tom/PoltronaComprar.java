@@ -8,10 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.jigabyte.tom.databinding.Activity3PoltronaComprarBinding;
 import br.com.jigabyte.tom.model.Poltrona;
 import br.com.jigabyte.tom.model.Voo;
 import br.com.jigabyte.tom.rest.ApiClient;
@@ -20,9 +20,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static br.com.jigabyte.tom.MainActivity.code;
-
 public class PoltronaComprar extends AppCompatActivity {
+
+    String code = MainActivity.code;
 
     public static final String TAG = "";
     Activity3PoltronaComprarBinding bind;
@@ -35,6 +35,7 @@ public class PoltronaComprar extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_3_poltrona_comprar);
         poltronasDisponiveis = new ArrayList<>();
         p = new Poltrona();
         bind = DataBindingUtil.setContentView(this, R.layout.activity_3_poltrona_comprar);
@@ -107,7 +108,7 @@ public class PoltronaComprar extends AppCompatActivity {
             this.context = context;
         }
 
-        public void comprarClicker(View view) {
+        public void comprarPassagem(View view) {
             comprar(poltronasDisponiveis.get(bind.spinnerPoltrona.getSelectedItemPosition()).getId(), voo.getId(), code);
         }
 
