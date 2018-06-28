@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -43,20 +44,56 @@ public class VooBuscar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_2_voo_buscar);
 
-        abrirFiltros();
+        Aeroporto x = new Aeroporto(0, "", "");
+        aeroportos_origem = new ArrayList<>();
+        aeroportos_origem.add(x);
+        aeroportos_destino = new ArrayList<>();
+        aeroportos_destino.add(x);
+
+        buscaVoos();
+
 
         handlers = new MeusClickHandlers(this);
         binding.setHandlers(handlers);
 
-        listaDeVoos = new ArrayList<>();
-
         // use a linear layout manager
         binding.recyclerViewVoos.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewVoos.setHasFixedSize(true);
+    }
 
-        voosAdapter = new VoosAdapter(listaDeVoos);
+    private void pesquisarVoos() {
+
+        // TODO - implementar os filtros que atendam data e aeroportos
+        List<Voo> listaFiltrada = listaFiltrada();
+
+
+        fecharFiltros();
+        finalizarProgress();
+        voosAdapter = new VoosAdapter(listaFiltrada);
         binding.recyclerViewVoos.setAdapter(voosAdapter);
+    }
 
+    private List<Voo> listaFiltrada() {
+        List<Voo> lista = listaDeVoos;
+
+
+        // TODO - implementar os filtros que atendam data e aeroportos
+        /*
+        Calendata data_1 = new Calendata(binding.dataInicial.getText().toString());
+        Calendata data_2 = new Calendata(binding.dataFinal.getText().toString());
+
+        Set<Aeroporto> hsOrigem = new HashSet<>();
+        Set<Aeroporto> hsDestino = new HashSet<>();
+        for (Voo voo : listaDeVoos) {
+            hsOrigem.add(voo.getOrigem());
+            hsDestino.add(voo.getDestino());
+        }
+        aeroportos_origem.addAll(hsOrigem);
+        aeroportos_destino.addAll(hsDestino);
+
+        */
+
+        return lista;
     }
 
     private void buscaVoos() {
@@ -71,25 +108,7 @@ public class VooBuscar extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     listaDeVoos = response.body();
-
-                    //preenche spinners
-                    aeroportos_origem = new ArrayList<>();
-                    aeroportos_destino = new ArrayList<>();
-                    Set<Aeroporto> hsOrigem = new HashSet<>();
-                    Set<Aeroporto> hsDestino = new HashSet<>();
-                    for (Voo voo : listaDeVoos) {
-                        hsOrigem.add(voo.getOrigem());
-                        hsDestino.add(voo.getDestino());
-                    }
-                    aeroportos_origem.addAll(hsOrigem);
-                    aeroportos_destino.addAll(hsDestino);
-                    /* TODO preencher estes Spinners ou autoCompleteTexView */
-
-                    // Carregando as listagem no RecyclerView
-                    finalizarProgress();
-                    voosAdapter = new VoosAdapter(listaDeVoos);
-                    binding.recyclerViewVoos.setAdapter(voosAdapter);
-
+                    abrirFiltros();
                 } else {
                     Toast.makeText(getApplicationContext(), "Erro ao tentar carregar lista.", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "Erro: " + response.errorBody().toString());
@@ -111,14 +130,40 @@ public class VooBuscar extends AppCompatActivity {
         binding.txtData2.setVisibility(View.VISIBLE);
         binding.dataFinal.setVisibility(View.VISIBLE);
         binding.txtOrigem.setVisibility(View.VISIBLE);
-        binding.origem.setVisibility(View.VISIBLE);
         binding.txtDestino.setVisibility(View.VISIBLE);
-        binding.destino.setVisibility(View.VISIBLE);
         binding.btnPesquisar.setVisibility(View.VISIBLE);
         binding.textView.setVisibility(View.GONE);
-        binding.progressBarVoos.setVisibility(View.GONE);
         binding.txtCarregando.setVisibility(View.GONE);
         binding.btnFiltros.setVisibility(View.GONE);
+
+        // não add duplicatas
+        Set<Aeroporto> hsOrigem = new HashSet<>();
+        Set<Aeroporto> hsDestino = new HashSet<>();
+        for (Voo voo : listaDeVoos) {
+            hsOrigem.add(voo.getOrigem());
+            hsDestino.add(voo.getDestino());
+        }
+        aeroportos_origem.addAll(hsOrigem);
+        aeroportos_destino.addAll(hsDestino);
+
+        //preenche spinners
+        ArrayAdapter<Aeroporto> adapterOrigem =
+                new ArrayAdapter<>(
+                        getApplicationContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        aeroportos_origem
+                );
+        ArrayAdapter<Aeroporto> adapterDestino =
+                new ArrayAdapter<>(
+                        getApplicationContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        aeroportos_destino
+                );
+        binding.origem.setAdapter(adapterOrigem);
+        binding.destino.setAdapter(adapterDestino);
+        binding.origem.setVisibility(View.VISIBLE);
+        binding.destino.setVisibility(View.VISIBLE);
+        binding.progressBarVoos.setVisibility(View.GONE);
     }
 
     public void fecharFiltros() {
@@ -161,9 +206,7 @@ public class VooBuscar extends AppCompatActivity {
         }
 
         public void buscarClicked(View view) {
-            fecharFiltros();
-            // TODO - implementar os filtros que atendam data e aeroportos
-            buscaVoos();
+            pesquisarVoos();
         }
 
         public void pickDataInicial(View view) {

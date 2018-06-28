@@ -82,4 +82,9 @@ public class Aeroporto implements Serializable, Observable {
             propertyChangeRegistry.remove(callback);
         }
     }
+
+    @Override
+    public String toString() {
+        return cidade + "\n(" + nome + ")";
+    }
 }

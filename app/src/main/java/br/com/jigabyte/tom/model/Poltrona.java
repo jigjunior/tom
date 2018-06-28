@@ -5,7 +5,6 @@ import android.databinding.Observable;
 import android.databinding.PropertyChangeRegistry;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import br.com.jigabyte.tom.BR;
 
@@ -97,6 +96,6 @@ public class Poltrona implements Observable {
 
     @Override
     public String toString() {
-        return super.toString();
+        return assento;
     }
 }
