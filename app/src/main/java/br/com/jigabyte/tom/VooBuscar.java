@@ -151,13 +151,13 @@ public class VooBuscar extends AppCompatActivity {
         ArrayAdapter<Aeroporto> adapterOrigem =
                 new ArrayAdapter<>(
                         getApplicationContext(),
-                        android.R.layout.simple_spinner_dropdown_item,
+                        R.layout.spinner,
                         aeroportos_origem
                 );
         ArrayAdapter<Aeroporto> adapterDestino =
                 new ArrayAdapter<>(
                         getApplicationContext(),
-                        android.R.layout.simple_spinner_dropdown_item,
+                        R.layout.spinner,
                         aeroportos_destino
                 );
         binding.origem.setAdapter(adapterOrigem);

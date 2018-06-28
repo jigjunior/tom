@@ -73,6 +73,34 @@ public class PoltronaComprar extends AppCompatActivity {
                 R.layout.spinner,
                 poltronasDisponiveis);
         bind.spinnerPoltronaDisponivel.setAdapter(adapterSpinnerPoltrona);
+/*
+        spinner_clientes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                cliente = new Cliente();
+                cliente.setNome(spinner_clientes.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        String[] clientes = {"", "Fulano", "Beltrano", "Ciclano"};
+        String[] pagamento = {"À vista", "15-30 dias", "30-60-90 dias"};
+        String[] tipo = {"Venda", "Orçamento", "Devolução"};
+
+        ArrayAdapter<String> adapterClientes = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner, clientes);
+        ArrayAdapter<String> adapterPagamento = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner, pagamento);
+        ArrayAdapter<String> adapterTipo = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner, tipo);
+
+        spinner_clientes.setAdapter(adapterClientes);
+        spinner_forma_pagamento.setAdapter(adapterPagamento);
+        spinner_tipo_pagamento.setAdapter(adapterTipo);
+        */
+
+
     }
 
     public void buscaPoltronasDisponiveis() {
