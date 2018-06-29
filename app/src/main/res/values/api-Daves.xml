@@ -267,7 +267,7 @@ Voo
    /voo/long {id}/poltronas/long {poltrona}
    'https://service.davesmartins.com.br/api/voo/1/poltronas/1'
    parameter path long {id}
-   parameter path long {id}
+    parameter path long {poltrona}
    paramenter header String {code}
    CURL
    curl -X PUT
